@@ -1,6 +1,7 @@
 'use client'
 
 import { useRef, useState } from 'react'
+import { upload } from '@vercel/blob/client'
 import { Upload, X, Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
@@ -19,24 +20,38 @@ export function MediaUploader({
 }) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [uploading, setUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
 
   const acceptAttr = accept === 'video' ? 'video/*' : 'image/*'
   const isVideo = accept === 'video'
 
   async function handleFile(file: File) {
+    const maxSize = isVideo ? 100 * 1024 * 1024 : 8 * 1024 * 1024
+    if (file.size > maxSize) {
+      toast.error(
+        isVideo ? 'Videos must be under 100MB.' : 'Images must be under 8MB.',
+      )
+      return
+    }
+
     setUploading(true)
+    setProgress(0)
     try {
-      const formData = new FormData()
-      formData.append('file', file)
-      const res = await fetch('/api/upload', { method: 'POST', body: formData })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Upload failed')
-      onChange(data.url)
+      // Uploads directly from the browser to Blob storage — the file bytes
+      // never pass through our server, so there's no serverless body-size
+      // limit to worry about even for larger videos.
+      const blob = await upload(`store/${Date.now()}-${file.name}`, file, {
+        access: 'public',
+        handleUploadUrl: '/api/upload',
+        onUploadProgress: ({ percentage }) => setProgress(percentage),
+      })
+      onChange(blob.url)
       toast.success('Uploaded')
     } catch (err) {
       toast.error(err instanceof Error ? err.message : 'Upload failed')
     } finally {
       setUploading(false)
+      setProgress(0)
     }
   }
 
@@ -74,7 +89,7 @@ export function MediaUploader({
           {uploading ? (
             <>
               <Loader2 className="h-5 w-5 animate-spin" />
-              Uploading...
+              Uploading{progress > 0 ? ` ${Math.round(progress)}%` : '...'}
             </>
           ) : (
             <>

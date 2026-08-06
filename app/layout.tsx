@@ -17,7 +17,7 @@ const playfair = Playfair_Display({
 })
 
 export const metadata: Metadata = {
-  title: 'Oakmark & Co. — Handcrafted Furniture Studio',
+  title: 'Osbam Laboratories & Furniture Ltd',
   description:
     'A family-run furniture studio crafting timeless, solid-hardwood pieces built to last generations. Browse our showroom collection and visit us in person.',
   generator: 'v0.app',
