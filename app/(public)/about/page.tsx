@@ -3,7 +3,7 @@ import { Target, Eye, Heart } from 'lucide-react'
 import { getSettings } from '@/lib/queries'
 
 export const metadata: Metadata = {
-  title: 'Our Story — Oakmark & Co.',
+  title: 'Our Story — Osbam Laboratories & Furniture Ltd.',
   description:
     'Learn about our family-run furniture studio, our commitment to craftsmanship, and the people behind every piece.',
 }
@@ -49,7 +49,7 @@ export default async function AboutPage() {
       <article className="mx-auto max-w-3xl px-4 py-14 sm:px-6">
         <div className="flex flex-col gap-5 text-lg leading-relaxed text-foreground/90">
           {paragraphs.map((p, i) => (
-            <p key={i} className="text-pretty">
+            <p key={i} className="whitespace-pre-line text-pretty">
               {p}
             </p>
           ))}
@@ -68,7 +68,7 @@ export default async function AboutPage() {
                   <h3 className="font-serif text-lg font-semibold text-foreground">
                     Our Mission
                   </h3>
-                  <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+                  <p className="whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
                     {settings.mission}
                   </p>
                 </div>
@@ -81,7 +81,7 @@ export default async function AboutPage() {
                   <h3 className="font-serif text-lg font-semibold text-foreground">
                     Our Vision
                   </h3>
-                  <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+                  <p className="whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
                     {settings.vision}
                   </p>
                 </div>

@@ -5,7 +5,7 @@ import { ReviewForm } from '@/components/review-form'
 import { Card } from '@/components/ui/card'
 
 export const metadata: Metadata = {
-  title: 'Reviews — Oakmark & Co.',
+  title: 'Reviews — Osbam Laboratories & Furniture Ltd.',
   description:
     'Read what our customers say about their furniture and share your own experience.',
 }

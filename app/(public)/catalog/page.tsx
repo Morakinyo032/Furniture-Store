@@ -3,7 +3,7 @@ import { getFurniture } from '@/lib/queries'
 import { CatalogGrid } from '@/components/catalog-grid'
 
 export const metadata: Metadata = {
-  title: 'Collection — Oakmark & Co.',
+  title: 'Collection — Osbam Laboratories & Furniture Ltd.',
   description:
     'Browse our full collection of handcrafted sofas, dining tables, beds, and more. Filter by room and explore photos and videos of each piece.',
 }

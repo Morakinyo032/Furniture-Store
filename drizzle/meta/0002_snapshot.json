@@ -403,7 +403,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'Oakmark & Co.'"
+          "default": "'Osbam Laboratories & Furniture Ltd.'"
         },
         "tagline": {
           "name": "tagline",

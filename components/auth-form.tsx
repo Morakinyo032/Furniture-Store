@@ -47,7 +47,7 @@ export function AuthForm({ mode }: { mode: 'sign-in' | 'sign-up' }) {
           className="mb-6 flex flex-col items-center leading-none"
         >
           <span className="font-serif text-2xl font-semibold tracking-tight text-foreground">
-            Oakmark &amp; Co.
+            Osbam Laboratories &amp; Furniture Ltd.
           </span>
           <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
             Owner Dashboard

@@ -14,7 +14,7 @@ function WhatsAppIcon(props: React.SVGProps<SVGSVGElement>) {
 }
 
 export const metadata: Metadata = {
-  title: 'Visit Us — Oakmark & Co.',
+  title: 'Visit Us — Osbam Laboratories & Furniture Ltd.',
   description:
     'Find our showroom, opening hours, and get in touch. We would love to help you find the perfect piece.',
 }

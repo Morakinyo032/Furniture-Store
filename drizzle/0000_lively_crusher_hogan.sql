@@ -61,7 +61,7 @@ CREATE TABLE "session" (
 --> statement-breakpoint
 CREATE TABLE "store_settings" (
 	"id" integer PRIMARY KEY DEFAULT 1 NOT NULL,
-	"storeName" text DEFAULT 'Oakmark & Co.' NOT NULL,
+	"storeName" text DEFAULT 'Osbam Laboratories & Furniture Ltd.' NOT NULL,
 	"tagline" text,
 	"about" text,
 	"heroImageUrl" text,
