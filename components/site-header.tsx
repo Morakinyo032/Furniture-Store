@@ -22,12 +22,22 @@ export async function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6">
-        <Link href="/" className="flex flex-col leading-none">
-          <span className="font-serif text-xl font-semibold tracking-tight text-foreground">
-            {settings.storeName}
-          </span>
-          <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
-            Furniture Studio
+        <Link href="/" className="flex items-center gap-2.5 leading-none">
+          {settings.logoUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={settings.logoUrl || "/placeholder.svg"}
+              alt={settings.storeName}
+              className="h-9 w-9 rounded-md object-cover"
+            />
+          ) : null}
+          <span className="flex flex-col">
+            <span className="font-serif text-xl font-semibold tracking-tight text-foreground">
+              {settings.storeName}
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
+              Furniture Studio
+            </span>
           </span>
         </Link>
 

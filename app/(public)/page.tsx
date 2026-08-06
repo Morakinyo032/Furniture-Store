@@ -76,8 +76,8 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-6xl gap-8 px-4 py-12 sm:grid-cols-3 sm:px-6">
           {[
             { icon: Hammer, title: 'Made by hand', text: 'Every piece is built and finished by our craftspeople in-house.' },
-            { icon: Leaf, title: 'Responsibly sourced', text: 'Solid hardwoods from sustainably managed forests.' },
-            { icon: Truck, title: 'White-glove delivery', text: 'Careful local delivery and setup in your home.' },
+            { icon: Leaf, title: 'Residential & institutional', text: 'From bespoke home furniture to physics and chemistry lab furniture for schools.' },
+            { icon: Truck, title: 'Delivery & installation', text: 'Careful delivery and setup, whether it\'s your home or your school lab.' },
           ].map(({ icon: Icon, title, text }) => (
             <div key={title} className="flex gap-4">
               <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md bg-accent/12 text-accent">

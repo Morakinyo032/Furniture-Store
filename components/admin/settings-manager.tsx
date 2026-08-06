@@ -17,10 +17,15 @@ type Settings = {
   storeName: string | null
   tagline: string | null
   about: string | null
+  mission: string | null
+  vision: string | null
+  coreValues: string | null
+  logoUrl: string | null
   heroImageUrl: string | null
   heroVideoUrl: string | null
   address: string | null
   phone: string | null
+  whatsapp: string | null
   email: string | null
   hours: string | null
   mapEmbedUrl: string | null
@@ -31,6 +36,7 @@ type Settings = {
 export function SettingsManager({ settings }: { settings: Settings }) {
   const router = useRouter()
   const [saving, setSaving] = useState(false)
+  const [logoUrl, setLogoUrl] = useState(settings.logoUrl ?? "")
   const [heroImageUrl, setHeroImageUrl] = useState(settings.heroImageUrl ?? "")
   const [heroVideoUrl, setHeroVideoUrl] = useState(settings.heroVideoUrl ?? "")
 
@@ -38,6 +44,7 @@ export function SettingsManager({ settings }: { settings: Settings }) {
     e.preventDefault()
     setSaving(true)
     const formData = new FormData(e.currentTarget)
+    formData.set("logoUrl", logoUrl)
     formData.set("heroImageUrl", heroImageUrl)
     formData.set("heroVideoUrl", heroVideoUrl)
     const result = await saveStoreSettings(formData)
@@ -71,6 +78,48 @@ export function SettingsManager({ settings }: { settings: Settings }) {
             <Label htmlFor="about">About the store</Label>
             <Textarea id="about" name="about" rows={5} defaultValue={settings.about ?? ""} />
           </div>
+          <MediaUploader label="Store logo" accept="image" value={logoUrl} onChange={setLogoUrl} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="font-serif text-xl">Mission, vision &amp; values</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="mission">Mission statement</Label>
+            <Textarea
+              id="mission"
+              name="mission"
+              rows={3}
+              placeholder="What we do and who we do it for."
+              defaultValue={settings.mission ?? ""}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="vision">Vision statement</Label>
+            <Textarea
+              id="vision"
+              name="vision"
+              rows={3}
+              placeholder="Where we're headed as a business."
+              defaultValue={settings.vision ?? ""}
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="coreValues">Core values</Label>
+            <Textarea
+              id="coreValues"
+              name="coreValues"
+              rows={4}
+              placeholder={"One value per line, e.g.\nCraftsmanship\nDurability\nHonesty in pricing"}
+              defaultValue={settings.coreValues ?? ""}
+            />
+            <p className="text-xs text-muted-foreground">
+              Enter one value per line — each will show as its own item on the About page.
+            </p>
+          </div>
         </CardContent>
       </Card>
 
@@ -94,6 +143,17 @@ export function SettingsManager({ settings }: { settings: Settings }) {
               <Label htmlFor="phone">Phone</Label>
               <Input id="phone" name="phone" defaultValue={settings.phone ?? ""} />
             </div>
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="whatsapp">WhatsApp number</Label>
+              <Input
+                id="whatsapp"
+                name="whatsapp"
+                placeholder="2348012345678 (country code, no + or spaces)"
+                defaultValue={settings.whatsapp ?? ""}
+              />
+            </div>
+          </div>
+          <div className="grid gap-4 sm:grid-cols-2">
             <div className="flex flex-col gap-2">
               <Label htmlFor="email">Email</Label>
               <Input id="email" name="email" type="email" defaultValue={settings.email ?? ""} />

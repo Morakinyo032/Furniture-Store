@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Target, Eye, Heart } from 'lucide-react'
 import { getSettings } from '@/lib/queries'
 
 export const metadata: Metadata = {
@@ -8,7 +9,7 @@ export const metadata: Metadata = {
 }
 
 const DEFAULT_ABOUT =
-  'We are a family-run furniture studio dedicated to timeless design and honest craftsmanship. Every piece in our showroom is built from responsibly sourced solid hardwoods and finished by hand in our workshop.'
+  'We are a family-run furniture studio dedicated to timeless design and honest craftsmanship. Every piece in our showroom is built from responsibly sourced solid hardwoods and finished by hand in our workshop.\n\nBeyond home and office furniture, we also design and build furniture for school science laboratories — physics and chemistry lab benches, stools, storage, and fittings built to withstand daily classroom use while meeting the practical needs of teachers and students.'
 
 export default async function AboutPage() {
   const settings = await getSettings()
@@ -16,6 +17,12 @@ export default async function AboutPage() {
     .split(/\n\n+/)
     .filter(Boolean)
   const heroImage = settings.heroImageUrl || '/furniture/hero-showroom.png'
+  const coreValues = (settings.coreValues || '')
+    .split(/\n+/)
+    .map((v) => v.trim())
+    .filter(Boolean)
+  const hasMissionVisionValues =
+    settings.mission || settings.vision || coreValues.length > 0
 
   return (
     <div>
@@ -48,6 +55,59 @@ export default async function AboutPage() {
           ))}
         </div>
       </article>
+
+      {hasMissionVisionValues && (
+        <section className="border-t border-border bg-card">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+            <div className="grid gap-8 sm:grid-cols-3">
+              {settings.mission && (
+                <div className="flex flex-col items-start gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md bg-accent/12 text-accent">
+                    <Target className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-serif text-lg font-semibold text-foreground">
+                    Our Mission
+                  </h3>
+                  <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+                    {settings.mission}
+                  </p>
+                </div>
+              )}
+              {settings.vision && (
+                <div className="flex flex-col items-start gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md bg-accent/12 text-accent">
+                    <Eye className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-serif text-lg font-semibold text-foreground">
+                    Our Vision
+                  </h3>
+                  <p className="text-pretty text-sm leading-relaxed text-muted-foreground">
+                    {settings.vision}
+                  </p>
+                </div>
+              )}
+              {coreValues.length > 0 && (
+                <div className="flex flex-col items-start gap-3">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-md bg-accent/12 text-accent">
+                    <Heart className="h-5 w-5" />
+                  </div>
+                  <h3 className="font-serif text-lg font-semibold text-foreground">
+                    Core Values
+                  </h3>
+                  <ul className="flex flex-col gap-1.5 text-sm leading-relaxed text-muted-foreground">
+                    {coreValues.map((value, i) => (
+                      <li key={i} className="flex gap-2">
+                        <span className="text-accent">&bull;</span>
+                        <span>{value}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
     </div>
   )
 }
