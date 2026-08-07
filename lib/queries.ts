@@ -1,6 +1,6 @@
 import 'server-only'
 import { db } from '@/lib/db'
-import { furniture, reviews, storeSettings, inquiries } from '@/lib/db/schema'
+import { furniture, reviews, storeSettings, inquiries, teamMembers } from '@/lib/db/schema'
 import { asc, desc, eq } from 'drizzle-orm'
 
 const DEFAULT_SETTINGS = {
@@ -29,6 +29,7 @@ export type StoreSettings = typeof DEFAULT_SETTINGS
 export type Furniture = typeof furniture.$inferSelect
 export type Review = typeof reviews.$inferSelect
 export type Inquiry = typeof inquiries.$inferSelect
+export type TeamMember = typeof teamMembers.$inferSelect
 
 export async function getSettings(): Promise<StoreSettings> {
   const rows = await db
@@ -68,4 +69,11 @@ export async function getAllReviews(): Promise<Review[]> {
 
 export async function getInquiries(): Promise<Inquiry[]> {
   return db.select().from(inquiries).orderBy(desc(inquiries.createdAt))
+}
+
+export async function getTeamMembers(): Promise<TeamMember[]> {
+  return db
+    .select()
+    .from(teamMembers)
+    .orderBy(asc(teamMembers.sortOrder), desc(teamMembers.createdAt))
 }

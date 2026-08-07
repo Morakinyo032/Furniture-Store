@@ -4,15 +4,17 @@ import {
   getSettings,
   getFeaturedFurniture,
   getApprovedReviews,
+  getTeamMembers,
 } from '@/lib/queries'
 import { FurnitureCard } from '@/components/furniture-card'
 import { StarRating } from '@/components/star-rating'
 
 export default async function HomePage() {
-  const [settings, featured, reviews] = await Promise.all([
+  const [settings, featured, reviews, team] = await Promise.all([
     getSettings(),
     getFeaturedFurniture(),
     getApprovedReviews(),
+    getTeamMembers(),
   ])
 
   const heroImage = settings.heroImageUrl || '/furniture/hero-showroom.png'
@@ -121,6 +123,51 @@ export default async function HomePage() {
           </p>
         )}
       </section>
+
+      {/* Meet Our Professionals */}
+      {team.length > 0 && (
+        <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+          <div className="text-center">
+            <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+              The People Behind The Work
+            </p>
+            <h2 className="mt-2 font-serif text-3xl font-semibold text-foreground">
+              Meet Our Professionals
+            </h2>
+          </div>
+          <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {team.map((member) => (
+              <div key={member.id} className="flex flex-col items-center text-center">
+                <div className="h-32 w-32 overflow-hidden rounded-full bg-muted">
+                  {member.photoUrl ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      src={member.photoUrl || "/placeholder.svg"}
+                      alt={member.name}
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center font-serif text-2xl text-muted-foreground">
+                      {member.name.charAt(0)}
+                    </div>
+                  )}
+                </div>
+                <h3 className="mt-4 font-serif text-lg font-semibold text-foreground">
+                  {member.name}
+                </h3>
+                {member.role && (
+                  <p className="text-sm font-medium text-accent">{member.role}</p>
+                )}
+                {member.bio && (
+                  <p className="mt-2 whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
+                    {member.bio}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Reviews teaser */}
       {reviews.length > 0 && (

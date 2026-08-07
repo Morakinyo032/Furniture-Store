@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { furniture, reviews, storeSettings, inquiries } from '@/lib/db/schema'
+import { furniture, reviews, storeSettings, inquiries, teamMembers } from '@/lib/db/schema'
 import { del } from '@vercel/blob'
 import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
@@ -172,4 +172,49 @@ export async function deleteBlob(url: string) {
       // Ignore — the blob may already be gone.
     }
   }
+}
+
+export async function createTeamMember(input: {
+  name: string
+  role?: string
+  bio?: string
+  photoUrl?: string
+  sortOrder?: number
+}) {
+  await requireOwner()
+  const name = input.name.trim()
+  if (!name) throw new Error('Name is required')
+
+  await db.insert(teamMembers).values({
+    name,
+    role: input.role?.trim() || null,
+    bio: input.bio?.trim() || null,
+    photoUrl: input.photoUrl || null,
+    sortOrder: input.sortOrder ?? 0,
+  })
+  revalidateStore()
+}
+
+export async function updateTeamMember(
+  id: number,
+  input: { name: string; role?: string; bio?: string; photoUrl?: string; sortOrder?: number },
+) {
+  await requireOwner()
+  await db
+    .update(teamMembers)
+    .set({
+      name: input.name.trim(),
+      role: input.role?.trim() || null,
+      bio: input.bio?.trim() || null,
+      photoUrl: input.photoUrl || null,
+      sortOrder: input.sortOrder ?? 0,
+    })
+    .where(eq(teamMembers.id, id))
+  revalidateStore()
+}
+
+export async function deleteTeamMember(id: number) {
+  await requireOwner()
+  await db.delete(teamMembers).where(eq(teamMembers.id, id))
+  revalidateStore()
 }

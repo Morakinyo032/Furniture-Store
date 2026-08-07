@@ -119,3 +119,13 @@ export const inquiries = pgTable('inquiries', {
   message: text('message').notNull(),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
 })
+
+export const teamMembers = pgTable('team_members', {
+  id: serial('id').primaryKey(),
+  name: text('name').notNull(),
+  role: text('role'),
+  bio: text('bio'),
+  photoUrl: text('photoUrl'),
+  sortOrder: integer('sortOrder').notNull().default(0),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+})

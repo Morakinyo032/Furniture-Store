@@ -6,23 +6,28 @@ import {
   getAllReviews,
   getInquiries,
   getSettings,
+  getTeamMembers,
 } from '@/lib/queries'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { FurnitureManager } from '@/components/admin/furniture-manager'
 import { ReviewsManager } from '@/components/admin/reviews-manager'
 import { InquiriesList } from '@/components/admin/inquiries-list'
 import { SettingsManager } from '@/components/admin/settings-manager'
+import { TeamManager } from '@/components/admin/team-manager'
+import { AccountManager } from '@/components/admin/account-manager'
 import { SignOutButton } from '@/components/admin/sign-out-button'
 
 export default async function AdminPage() {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session?.user) redirect('/sign-in')
 
-  const [items, reviews, inquiries, settings] = await Promise.all([
+  const [items, reviews, inquiries, settings, team] = await Promise.all([
     getFurniture(),
     getAllReviews(),
     getInquiries(),
     getSettings(),
+    getTeamMembers(),
   ])
 
   return (
@@ -65,7 +70,19 @@ export default async function AdminPage() {
           <InquiriesList inquiries={inquiries} />
         </TabsContent>
 
-        <TabsContent value="settings" className="mt-6">
+        <TabsContent value="settings" className="mt-6 flex flex-col gap-6">
+          <AccountManager
+            currentName={session.user.name ?? ''}
+            currentEmail={session.user.email ?? ''}
+          />
+          <Card>
+            <CardHeader>
+              <CardTitle className="font-serif text-xl">Meet Our Professionals</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <TeamManager members={team} />
+            </CardContent>
+          </Card>
           <SettingsManager settings={settings} />
         </TabsContent>
       </Tabs>

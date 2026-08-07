@@ -17,6 +17,17 @@ export const auth = betterAuth({
     enabled: true,
     autoSignIn: true,
   },
+   user: {
+   changeEmail: {
+     enabled: true,
+     // No transactional email service is set up for this single-owner
+     // store, so we skip the verification-email step. This only works
+     // while the account's email is still unverified (true here, since
+     // sign-up never sends a verification email) — don't reuse this
+     // pattern for a multi-user app with real customer accounts.
+     updateEmailWithoutVerification: true,
+   },
+ },
   // This store has a single owner account. Once that account exists, block
   // any further account creation so a stranger can never sign up and get
   // admin access. Enforced at the database layer so it applies no matter
