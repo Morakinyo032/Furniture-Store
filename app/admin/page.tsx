@@ -7,6 +7,7 @@ import {
   getInquiries,
   getSettings,
   getTeamMembers,
+  getProjects,
 } from '@/lib/queries'
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
@@ -15,6 +16,7 @@ import { ReviewsManager } from '@/components/admin/reviews-manager'
 import { InquiriesList } from '@/components/admin/inquiries-list'
 import { SettingsManager } from '@/components/admin/settings-manager'
 import { TeamManager } from '@/components/admin/team-manager'
+import { ProjectManager } from '@/components/admin/project-manager'
 import { AccountManager } from '@/components/admin/account-manager'
 import { SignOutButton } from '@/components/admin/sign-out-button'
 
@@ -22,12 +24,13 @@ export default async function AdminPage() {
   const session = await auth.api.getSession({ headers: await headers() })
   if (!session?.user) redirect('/sign-in')
 
-  const [items, reviews, inquiries, settings, team] = await Promise.all([
+  const [items, reviews, inquiries, settings, team, projects] = await Promise.all([
     getFurniture(),
     getAllReviews(),
     getInquiries(),
     getSettings(),
     getTeamMembers(),
+    getProjects(),
   ])
 
   return (
@@ -83,6 +86,14 @@ export default async function AdminPage() {
               <TeamManager members={team} />
             </CardContent>
           </Card>
+         <Card>
+           <CardHeader>
+             <CardTitle className="font-serif text-xl">Our Projects</CardTitle>
+           </CardHeader>
+           <CardContent>
+             <ProjectManager projects={projects} />
+           </CardContent>
+         </Card>
           <SettingsManager settings={settings} />
         </TabsContent>
       </Tabs>

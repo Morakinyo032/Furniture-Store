@@ -5,16 +5,18 @@ import {
   getFeaturedFurniture,
   getApprovedReviews,
   getTeamMembers,
+  getProjects,
 } from '@/lib/queries'
 import { FurnitureCard } from '@/components/furniture-card'
 import { StarRating } from '@/components/star-rating'
 
 export default async function HomePage() {
-  const [settings, featured, reviews, team] = await Promise.all([
+  const [settings, featured, reviews, team, projects] = await Promise.all([
     getSettings(),
     getFeaturedFurniture(),
     getApprovedReviews(),
     getTeamMembers(),
+    getProjects(),
   ])
 
   const heroImage = settings.heroImageUrl || '/furniture/hero-showroom.png'
@@ -123,6 +125,63 @@ export default async function HomePage() {
           </p>
         )}
       </section>
+
+      {/* Our Projects */}
+      {projects.length > 0 && (
+        <section className="border-b border-border bg-card">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+            <div className="text-center">
+              <p className="text-xs font-medium uppercase tracking-[0.2em] text-accent">
+                Past Work
+              </p>
+              <h2 className="mt-2 font-serif text-3xl font-semibold text-foreground">
+                Our Projects
+              </h2>
+            </div>
+            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+              {projects.map((project) => (
+                <div
+                  key={project.id}
+                  className="flex flex-col overflow-hidden rounded-lg border border-border bg-background"
+                >
+                  <div className="aspect-[4/3] w-full overflow-hidden bg-muted">
+                    {project.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={project.imageUrl || "/placeholder.svg"}
+                        alt={project.title}
+                        className="h-full w-full object-cover"
+                      />
+                    ) : null}
+                  </div>
+                  <div className="flex flex-1 flex-col gap-2 p-5">
+                    <h3 className="font-serif text-lg font-semibold text-foreground">
+                      {project.title}
+                    </h3>
+                    {(project.clientName || project.location) && (
+                      <p className="text-sm font-medium text-accent">
+                        {project.clientName}
+                        {project.clientName && project.location && ' \u00b7 '}
+                        {project.location}
+                      </p>
+                    )}
+                    {project.description && (
+                      <p className="whitespace-pre-line text-pretty text-sm leading-relaxed text-muted-foreground">
+                        {project.description}
+                      </p>
+                    )}
+                    {project.completedDate && (
+                      <p className="mt-auto pt-2 text-xs uppercase tracking-wide text-muted-foreground">
+                        Completed {project.completedDate}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Meet Our Professionals */}
       {team.length > 0 && (

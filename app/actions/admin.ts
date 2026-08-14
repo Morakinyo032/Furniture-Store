@@ -218,3 +218,62 @@ export async function deleteTeamMember(id: number) {
   await db.delete(teamMembers).where(eq(teamMembers.id, id))
   revalidateStore()
 }
+
+export async function createProject(input: {
+  title: string
+  clientName?: string
+  location?: string
+  description?: string
+  imageUrl?: string
+  completedDate?: string
+  sortOrder?: number
+}) {
+  await requireOwner()
+  const title = input.title.trim()
+  if (!title) throw new Error('Title is required')
+
+  await db.insert(projects).values({
+    title,
+    clientName: input.clientName?.trim() || null,
+    location: input.location?.trim() || null,
+    description: input.description?.trim() || null,
+    imageUrl: input.imageUrl || null,
+    completedDate: input.completedDate?.trim() || null,
+    sortOrder: input.sortOrder ?? 0,
+  })
+  revalidateStore()
+}
+
+export async function updateProject(
+  id: number,
+  input: {
+    title: string
+    clientName?: string
+    location?: string
+    description?: string
+    imageUrl?: string
+    completedDate?: string
+    sortOrder?: number
+  },
+) {
+  await requireOwner()
+  await db
+    .update(projects)
+    .set({
+      title: input.title.trim(),
+      clientName: input.clientName?.trim() || null,
+      location: input.location?.trim() || null,
+      description: input.description?.trim() || null,
+      imageUrl: input.imageUrl || null,
+      completedDate: input.completedDate?.trim() || null,
+      sortOrder: input.sortOrder ?? 0,
+    })
+    .where(eq(projects.id, id))
+  revalidateStore()
+}
+
+export async function deleteProject(id: number) {
+  await requireOwner()
+  await db.delete(projects).where(eq(projects.id, id))
+  revalidateStore()
+}

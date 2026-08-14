@@ -129,3 +129,15 @@ export const teamMembers = pgTable('team_members', {
   sortOrder: integer('sortOrder').notNull().default(0),
   createdAt: timestamp('createdAt').notNull().defaultNow(),
 })
+
+export const projects = pgTable('projects', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  clientName: text('clientName'),
+  location: text('location'),
+  description: text('description'),
+  imageUrl: text('imageUrl'),
+  completedDate: text('completedDate'),
+  sortOrder: integer('sortOrder').notNull().default(0),
+  createdAt: timestamp('createdAt').notNull().defaultNow(),
+})
