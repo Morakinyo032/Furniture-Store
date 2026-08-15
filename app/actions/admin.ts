@@ -2,7 +2,7 @@
 
 import { auth } from '@/lib/auth'
 import { db } from '@/lib/db'
-import { furniture, reviews, storeSettings, inquiries, teamMembers } from '@/lib/db/schema'
+import { furniture, reviews, storeSettings, inquiries, teamMembers, projects } from '@/lib/db/schema'
 import { del } from '@vercel/blob'
 import { eq } from 'drizzle-orm'
 import { headers } from 'next/headers'
